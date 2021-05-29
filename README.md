@@ -69,7 +69,7 @@ npm run dev
 * multer
   #### Used Multer for handling multipart/form-data
 
-##Future Releases
+## Future Releases
 * Working on moving from EJS Templates to React
 * Integrate NodejS testing framework
 * Enable Auto deployment
