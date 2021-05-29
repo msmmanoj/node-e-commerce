@@ -1,5 +1,6 @@
 const path = require('path');
 const fs = require('fs');
+const https = require('https');
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
@@ -55,7 +56,9 @@ const accessLogStream = fs.createWriteStream(path.join(__dirname,'access.log'),{
     flags:'a'
 })
 
-app.use(helmet());
+app.use(helmet({
+    contentSecurityPolicy: false,
+}));
 app.use(compression());
 app.use(morgan('combined', { stream: accessLogStream }))
 app.use(bodyParser.urlencoded({extended: false}));
@@ -74,6 +77,12 @@ app.use(
 );
 app.use(csrfProtection);
 app.use(flash());
+
+// To Create https connection in local, we need to create a local ssl certificate
+// cmd :  openssl req -nodes -new -x509 -keyout server.key -out server.cert
+
+// const privateKey = fs.readFileSync('server.key');
+// const certificate = fs.readFileSync('server.cert');
 
 app.use((req, res, next) => {
     res.locals.isAuthenticated = req.session.isLoggedIn;
@@ -121,6 +130,12 @@ mongoose
     .connect(MONGODB_URI)
     .then(result => {
         app.listen(process.env.PORT || 3030);
+        // Need to use generated certificate to create a https connection in local env
+
+        // https.createServer({
+        //     key:privateKey,
+        //     cert:certificate
+        // },app).listen(process.env.PORT || 3030);
     })
     .catch(err => {
         console.log(err);
