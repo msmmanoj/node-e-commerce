@@ -5,10 +5,11 @@ const sendGridTransport = require('nodemailer-sendgrid-transport');
 const {validationResult} = require('express-validator/check');
 
 const User = require('../models/user');
+const adminMail = process.env.ADMIN_MAIL_ID;
 
 const transporter = nodeMailer.createTransport(sendGridTransport({
     auth: {
-        api_key: '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'
+        api_key: process.env.SEND_GRID_API_KEY
     }
 }))
 
@@ -134,12 +135,12 @@ exports.postSignup = (req, res, next) => {
             res.redirect('/login');
             return transporter.sendMail({
                 to: email,
-                from: 'msmmanoj007@gmail.com',
+                from: adminMail,
                 subject: 'Signup succeeded!',
                 html: `
                     <h1>Hi ${email.substring(0, email.indexOf("@"))}</h1></br>
                     <p>Thanks for signing up</p></br>
-                    <p>click the following <a href="http://localhost:3030/login"><i>link</i></a> to navigate to our main application</p>
+                    <p>click the following <a href="${req.protocol + '://' + req.get('host')}/login"><i>link</i></a> to navigate to our main application</p>
                 `
             })
         })
@@ -193,12 +194,12 @@ exports.postReset = (req, res, next) => {
                 res.redirect('/');
                 return transporter.sendMail({
                     to: req.body.email,
-                    from: 'msmmanoj007@gmail.com',
+                    from: adminMail,
                     subject: 'Password reset',
                     html: `
                         <h1>Hi ${req.body.email.substring(0, req.body.email.indexOf("@"))}</h1></br>
                         <p>You requested a password reset</p>
-                        <p>Click this <a href="http://localhost:3030/reset/${token}">link</a> to set a new password.</p>
+                        <p>Click this <a href="${req.protocol + '://' + req.get('host')}/reset/${token}">link</a> to set a new password.</p>
                       `
                 });
             })
@@ -269,18 +270,20 @@ exports.postNewPassword = (req, res, next) => {
         });
 };
 
-exports.sendMailCheck = (req, res) => {
-    transporter.sendMail({
-        to: 'malepatimanoj6@gmail.com',
-        from: 'msmmanoj007@gmail.com',
-        subject: 'sample mail',
-        html: '<h1>mail send successful</h1>',
-    })
-        .then((result) => {
-            console.log(result)
-            res.redirect('/')
-        })
-        .catch(err => {
-            console.log(err)
-        })
-}
+
+// Sample API to verify mail function
+// exports.sendMailCheck = (req, res) => {
+//     transporter.sendMail({
+//         to: '',
+//         from: '',
+//         subject: 'sample mail',
+//         html: '<h1>mail send successful</h1>',
+//     })
+//         .then((result) => {
+//             console.log(result)
+//             res.redirect('/')
+//         })
+//         .catch(err => {
+//             console.log(err)
+//         })
+// }

@@ -63,6 +63,7 @@ router.get('/reset/:token', authController.getNewPassword);
 
 router.post('/new-password', authController.postNewPassword);
 
-router.get('/mailcheck', authController.sendMailCheck);
+// Sample mail check API route
+// router.get('/mailcheck', authController.sendMailCheck);
 
 module.exports = router;
