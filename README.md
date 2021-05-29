@@ -32,7 +32,7 @@ create Twilio sendgrid API key here [viewed online here](https://app.sendgrid.co
 
 create Stripe API key here [viewed online here](https://dashboard.stripe.com/).
 
-###nodemon.json env variable structure
+### nodemon.json env variable structure
 
 ```
 {
