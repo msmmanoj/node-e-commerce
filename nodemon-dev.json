@@ -1,0 +1,10 @@
+{
+  "env": {
+    "ADMIN_MAIL_ID": "",
+    "MONGO_DB_NAME": "",
+    "MONGO_PASSWORD": "",
+    "MONGO_USER": "",
+    "SEND_GRID_API_KEY": "",
+    "STRIPE_KEY": ""
+  }
+}
